@@ -1,0 +1,10 @@
+name: EpicRageQuit
+main: me.justbru00.epic.ragequit
+version: 1.0
+description: Adds /ragequit
+author: JustBru00
+
+
+commands:
+ ragequit:
+       description: Makes you rage quit.   
