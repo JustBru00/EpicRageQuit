@@ -26,6 +26,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RageQuit extends JavaPlugin {
@@ -51,12 +52,15 @@ public class RageQuit extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
+		clogger.sendMessage(prefix + ChatColor.RED + "Has Been Disabled.");
 	}
 
 	@Override
 	public void onEnable() {
+		PluginDescriptionFile pdfFile = this.getDescription();
 
+		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
+				+ pdfFile.getVersion() + " Has Been Enabled.");
 	}
 
 	
