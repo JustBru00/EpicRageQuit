@@ -31,21 +31,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class RageQuit extends JavaPlugin {
 
-	public String prefix = color("&8[&bEpic&fRageQuit&8] &c");
+	public String prefix;
 	ConsoleCommandSender clogger = this.getServer().getConsoleSender();
+	
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
 		
 		if (commandLabel.equalsIgnoreCase("ragequit")) {
+			
+			if (getConfig().getInt("Config Version") == 1) {
+				
 			if (sender instanceof Player) {
+				
 				Player player = (Player) sender;
-				if (args.length == 0) {					
-					getServer().broadcastMessage(prefix + ChatColor.WHITE + player.getName() + ChatColor.RED + " rage quit.");
-					player.kickPlayer(ChatColor.RED + "You RAGE quit!");
-				} else player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");						
-			} else clogger.sendMessage(prefix + "Silly CONSOLE you can't rage.");
+				
+				if (args.length == 0) {		
+					
+					getServer().broadcastMessage(prefix + color(format(getConfig().getString("messages.Broadcast Message"), player)));
+					player.kickPlayer(color(format(getConfig().getString("messages.Kick Message"), player)));
+					
+				} else player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");		
+				
+				
+			} else clogger.sendMessage(prefix + color(getConfig().getString("messages.Console Deny")));
+			
+			
+		} else clogger.sendMessage(prefix + color("&4Your config version does not match the current version. Please regenerate it."));
+		
+			
 		}
+		
 		
 		return false;
 	}
@@ -61,11 +77,21 @@ public class RageQuit extends JavaPlugin {
 
 		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
 				+ pdfFile.getVersion() + " Has Been Enabled.");
+		
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		
+		prefix = getConfig().getString("messages.Prefix");
 	}
 
 	
 	public String color(String uncolored) {
-		String colored = ChatColor.translateAlternateColorCodes('&', uncolored);
+		String colored = ChatColor.translateAlternateColorCodes('&', uncolored);		
 		return colored;
+	}
+	
+	public String format(String unformated, Player player) {
+		String formated = unformated.replaceAll("%player%", player.getName());
+		return formated;
 	}
 }

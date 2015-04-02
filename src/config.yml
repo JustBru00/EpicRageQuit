@@ -1,0 +1,16 @@
+#EpicRageQuit Configuration File.
+#Color Codes work with &
+#You can use %player% in Broadcast Message and Kick Message as the player name
+#Comments Below show what the different options mean:
+#Config Version (DO NOT TOUCH PLUGIN WILL NOT WORK)
+#Broadcast Message: Is broadcast when someone ragequits
+#Kick Message: Is used as the kick reason when someone uses /ragequit
+#Console Deny: Is used if someone trys to use /ragequit in CONSOLE
+#Prefix: Is used in front of all messages
+Config Version: 1
+
+messages:
+   Broacast Message: '&f%player% &crage quit.'
+   Kick Message: '&f%player% &cyou rage quit.'
+   Console Deny: '&cSilly CONSOLE you can't rage.'
+   Prefix: '&8[&bEpic&fRageQuit&8] &c'   
