@@ -31,16 +31,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class RageQuit extends JavaPlugin {
 
-	public String prefix;
-	ConsoleCommandSender clogger = this.getServer().getConsoleSender();
 	
+	ConsoleCommandSender clogger = this.getServer().getConsoleSender();
+	public String prefix = color("&8[&bEpic&fRageQuit&8] &c");
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("ragequit")) {
+		if (commandLabel.equalsIgnoreCase("ragequit")) {	
 			
-			if (getConfig().getInt("Config Version") == 1) {
 				
 			if (sender instanceof Player) {
 				
@@ -56,10 +55,6 @@ public class RageQuit extends JavaPlugin {
 				
 			} else clogger.sendMessage(prefix + color(getConfig().getString("messages.Console Deny")));
 			
-			
-		} else clogger.sendMessage(prefix + color("&4Your config version does not match the current version. Please regenerate it."));
-		
-			
 		}
 		
 		
@@ -73,15 +68,17 @@ public class RageQuit extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		getConfig().options().copyDefaults(true);
+		saveConfig();
 		PluginDescriptionFile pdfFile = this.getDescription();
+		
 
 		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
 				+ pdfFile.getVersion() + " Has Been Enabled.");
 		
-		getConfig().options().copyDefaults(true);
-		saveConfig();
 		
-		prefix = getConfig().getString("messages.Prefix");
+		
+		
 	}
 
 	
@@ -94,4 +91,5 @@ public class RageQuit extends JavaPlugin {
 		String formated = unformated.replaceAll("%player%", player.getName());
 		return formated;
 	}
+	
 }
