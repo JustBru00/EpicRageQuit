@@ -7,8 +7,7 @@
 #Kick Message: Is used as the kick reason when someone uses /ragequit
 #Console Deny: Is used if someone trys to use /ragequit in CONSOLE
 Config Version: 1
-
 messages:
    Broacast Message: '&f%player% &crage quit.'
    Kick Message: '&f%player% &cyou rage quit.'
-   Console Deny: '&cSilly CONSOLE you can't rage.' 
+   Console Deny: '&cSilly CONSOLE you can not rage.' 

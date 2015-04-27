@@ -38,25 +38,17 @@ public class RageQuit extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("ragequit")) {	
-			
-				
-			if (sender instanceof Player) {
-				
-				Player player = (Player) sender;
-				
-				if (args.length == 0) {		
+		if (commandLabel.equalsIgnoreCase("ragequit")) {				
+			if (sender instanceof Player) {			
+				Player player = (Player) sender;				
+				if (args.length == 0) {				
 					
 					getServer().broadcastMessage(prefix + color(format(getConfig().getString("messages.Broadcast Message"), player)));
 					player.kickPlayer(color(format(getConfig().getString("messages.Kick Message"), player)));
 					
-				} else player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");		
-				
-				
-			} else clogger.sendMessage(prefix + color(getConfig().getString("messages.Console Deny")));
-			
-		}
-		
+				} else player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");					
+			} else clogger.sendMessage(prefix + color(getConfig().getString("messages.Console Deny")));		
+		}		
 		
 		return false;
 	}
@@ -67,10 +59,9 @@ public class RageQuit extends JavaPlugin {
 	}
 
 	@Override
-	public void onEnable() {
-		getConfig().options().copyDefaults(true);
-		saveConfig();
+	public void onEnable() {		
 		PluginDescriptionFile pdfFile = this.getDescription();
+		this.saveDefaultConfig();
 		
 
 		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
@@ -88,7 +79,7 @@ public class RageQuit extends JavaPlugin {
 	}
 	
 	public String format(String unformated, Player player) {
-		String formated = unformated.replaceAll("%player%", player.getName());
+		String formated = unformated.replace("%player%", player.getName());
 		return formated;
 	}
 	
