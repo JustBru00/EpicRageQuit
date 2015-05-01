@@ -25,6 +25,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,6 +35,7 @@ public class RageQuit extends JavaPlugin {
 	
 	ConsoleCommandSender clogger = this.getServer().getConsoleSender();
 	public String prefix = color("&8[&bEpic&fRageQuit&8] &c");
+	public FileConfiguration config = getConfig();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
@@ -43,11 +45,21 @@ public class RageQuit extends JavaPlugin {
 				Player player = (Player) sender;				
 				if (args.length == 0) {				
 					
-					getServer().broadcastMessage(prefix + color(format(getConfig().getString("messages.Broadcast Message"), player)));
-					player.kickPlayer(color(format(getConfig().getString("messages.Kick Message"), player)));
-					
-				} else player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");					
-			} else clogger.sendMessage(prefix + color(getConfig().getString("messages.Console Deny")));		
+					String broadcastmsg = prefix + color(config.getString("messages.broadcast message"));
+					broadcastmsg = broadcastmsg.replace("{player}", player.getName());
+					getServer().broadcastMessage(broadcastmsg);			
+					String kickmsg = prefix + color(config.getString("messages.kick message"));
+					kickmsg = kickmsg.replace("{player}", player.getName());
+					player.kickPlayer(kickmsg);
+					return true;
+				} else {
+					player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");		
+					return true;
+				}
+			} else {
+				clogger.sendMessage(prefix + color(getConfig().getString("messages.console deny")));		
+				return true;
+			}
 		}		
 		
 		return false;
@@ -62,25 +74,18 @@ public class RageQuit extends JavaPlugin {
 	public void onEnable() {		
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.saveDefaultConfig();
-		
-
+		if (getConfig().isSet("messages.prefix")) {
+			prefix = getConfig().getString("messages.prefix");
+			prefix = color(prefix);
+			clogger.sendMessage(color(prefix + "&fPrefix set."));
+		}
 		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
-				+ pdfFile.getVersion() + " Has Been Enabled.");
-		
-		
-		
-		
+				+ pdfFile.getVersion() + " Has Been Enabled.");		
 	}
-
 	
 	public String color(String uncolored) {
 		String colored = ChatColor.translateAlternateColorCodes('&', uncolored);		
 		return colored;
 	}
-	
-	public String format(String unformated, Player player) {
-		String formated = unformated.replace("%player%", player.getName());
-		return formated;
-	}
-	
+
 }
