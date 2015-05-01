@@ -40,7 +40,7 @@ public class RageQuit extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
 		
-		if (commandLabel.equalsIgnoreCase("ragequit")) {				
+		if (command.getName().equalsIgnoreCase("ragequit")) {				
 			if (sender instanceof Player) {			
 				Player player = (Player) sender;				
 				if (args.length == 0) {				
