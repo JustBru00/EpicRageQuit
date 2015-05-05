@@ -43,8 +43,7 @@ public class RageQuit extends JavaPlugin {
 	public boolean useCooldown = true;
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,
-			String commandLabel, String[] args) {
+	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
 
 		if (command.getName().equalsIgnoreCase("ragequit")) {
 			if (sender instanceof Player) {
@@ -60,33 +59,37 @@ public class RageQuit extends JavaPlugin {
 
 					if (useCooldown) {
 						if (System.currentTimeMillis() - lastUsed >= cdmills) {
-
-							String broadcastmsg = prefix
-									+ color(config.getString("messages.broadcast message"));
-							broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
-							getServer().broadcastMessage(broadcastmsg);
-							String kickmsg = prefix	+ color(config.getString("messages.kick message"));
-							kickmsg = kickmsg.replace("{player}", player.getName());
-							player.kickPlayer(kickmsg);
+							
+							if (player.hasPermission("ragequit.admin") || player.isOp()) {
+								rageAdmin(player);
+							}
+							if (player.hasPermission("ragequit.moderator") && !player.isOp()) {
+								rageModerator(player);
+							}
+							if (player.hasPermission("ragequit.default") && !player.isOp()) {
+								rageDefault(player);
+							} else {
+								player.sendMessage(prefix + color(config.getString("messages.no permission")));
+							}
 
 							lastUsage.put(player.getName(),	System.currentTimeMillis());
-
 						} else {
-							int timeLeft = (int) (cdmills - ((System
-									.currentTimeMillis() - lastUsed) / 1000));
-							player.sendMessage(color(prefix
-									+ "&4This command is on cooldown for another "
-									+ timeLeft + " seconds."));
+							int timeLeft = (int) (cdtime - ((System.currentTimeMillis() - lastUsed) / 1000));
+							player.sendMessage(color(prefix	+ "&4This command is on cooldown for another "	+ timeLeft + " seconds."));
 						}
 						return true;
 					}
-					String broadcastmsg = prefix
-							+ color(config.getString("messages.broadcast message"));
-					broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
-					getServer().broadcastMessage(broadcastmsg);
-					String kickmsg = prefix	+ color(config.getString("messages.kick message"));
-					kickmsg = kickmsg.replace("{player}", player.getName());
-					player.kickPlayer(kickmsg);
+					if (player.hasPermission("ragequit.admin") || player.isOp()) {
+						rageAdmin(player);
+					}
+					if (player.hasPermission("ragequit.moderator") && !player.isOp()) {
+						rageModerator(player);
+					}
+					if (player.hasPermission("ragequit.default") && !player.isOp()) {
+						rageDefault(player);
+					} else {
+						player.sendMessage(prefix + color(config.getString("messages.no permission")));
+					}
 					
 					return true;
 				} else {
@@ -133,4 +136,30 @@ public class RageQuit extends JavaPlugin {
 		return colored;
 	}
 
+	public void rageAdmin(Player player){
+		String broadcastmsg = prefix + color(config.getString("messages.admin.broadcast message"));
+		broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
+		getServer().broadcastMessage(broadcastmsg);
+		String kickmsg = prefix	+ color(config.getString("messages.admin.kick message"));
+		kickmsg = kickmsg.replace("{player}", player.getName());
+		player.kickPlayer(kickmsg);
+	}
+	
+	public void rageModerator(Player player){
+		String broadcastmsg = prefix + color(config.getString("messages.moderator.broadcast message"));
+		broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
+		getServer().broadcastMessage(broadcastmsg);
+		String kickmsg = prefix	+ color(config.getString("messages.moderator.kick message"));
+		kickmsg = kickmsg.replace("{player}", player.getName());
+		player.kickPlayer(kickmsg);
+	}
+	
+	public void rageDefault(Player player){
+		String broadcastmsg = prefix + color(config.getString("messages.default.broadcast message"));
+		broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
+		getServer().broadcastMessage(broadcastmsg);
+		String kickmsg = prefix	+ color(config.getString("messages.default.kick message"));
+		kickmsg = kickmsg.replace("{player}", player.getName());
+		player.kickPlayer(kickmsg);
+	}		
 }

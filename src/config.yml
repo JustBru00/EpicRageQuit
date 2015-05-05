@@ -1,19 +1,38 @@
 #EpicRageQuit Configuration File.
 #Color Codes work with &
-#You can use {player} in Broadcast Message and Kick Message as the player name
-#Comments Below show what the different options mean:
-#Config Version (DO NOT TOUCH PLUGIN WILL NOT WORK)
-#ragequit.cooldown.time time in seconds before the command can be used again.
-#Broadcast Message: Is broadcast when someone ragequits
-#Kick Message: Is used as the kick reason when someone uses /ragequit
-#Console Deny: Is used if someone trys to use /ragequit in CONSOLE
-config version: 1
+#You can use {player} in Broadcast Message and Kick Message as the player name.
+
+
+# No touchy me config version.
+config version: 2
+
+# RageQuit command.
 ragequit:
-   cooldown:
+   # Cooldown header
+  cooldown:
+   # Time in secs. the command will be on cooldown.
     time: 600
-    use: true   
+    # Use cooldown? true or false
+    use: true
+ 
+# Messages Header 
 messages:
+   # Prefix for messages
    prefix: '&8[&bEpic&fRageQuit&8] &c'
-   broadcast message: '&f{player} &crage quit.'
-   kick message: '&f{player} &cyou rage quit.'
-   console deny: '&cSilly CONSOLE you can not rage.' 
+   # Console Deny Message
+   console deny: '&cSilly CONSOLE you can not rage.'   
+   # No Permission Message
+   no permission: '&cSorry you do not have permission.'
+
+   #Default Format Messages (Used when the player has ragequit.default permission)
+   default:
+     broadcast message: '&f{player} &crage quit.'
+     kick message: '&f{player} &cyou rage quit.'
+   #Admin Format Messages (Used when the player has ragequit.admin permission)
+   admin:
+     broadcast message: '&f{player} &crage quit.'
+     kick message: '&f{player} &cyou rage quit.'      
+   #Moderator Format Messages (Used when the player has ragequit.moderator permission)  
+   moderator:
+     broadcast message: '&f{player} &crage quit.'
+     kick message: '&f{player} &cyou rage quit.'
