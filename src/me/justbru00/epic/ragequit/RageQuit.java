@@ -18,8 +18,10 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/   
+ */
 package me.justbru00.epic.ragequit;
+
+import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -32,36 +34,75 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class RageQuit extends JavaPlugin {
 
-	
 	ConsoleCommandSender clogger = this.getServer().getConsoleSender();
 	public String prefix = color("&8[&bEpic&fRageQuit&8] &c");
 	public FileConfiguration config = getConfig();
-	
+
+	private HashMap<String, Long> lastUsage = new HashMap<String, Long>();
+	private int cdtime = 0;
+	public boolean useCooldown = true;
+
 	@Override
-	public boolean onCommand(CommandSender sender, Command command,	String commandLabel, String[] args) {
-		
-		if (commandLabel.equalsIgnoreCase("ragequit")) {				
-			if (sender instanceof Player) {			
-				Player player = (Player) sender;				
-				if (args.length == 0) {				
-					
-					String broadcastmsg = prefix + color(config.getString("messages.broadcast message"));
-					broadcastmsg = broadcastmsg.replace("{player}", player.getName());
-					getServer().broadcastMessage(broadcastmsg);			
-					String kickmsg = prefix + color(config.getString("messages.kick message"));
+	public boolean onCommand(CommandSender sender, Command command,
+			String commandLabel, String[] args) {
+
+		if (command.getName().equalsIgnoreCase("ragequit")) {
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
+				if (args.length == 0) {
+
+					long lastUsed = 0;
+					if (lastUsage.containsKey(player.getName())) {
+						lastUsed = lastUsage.get(player.getName());
+					}
+
+					int cdmills = cdtime * 1000;
+
+					if (useCooldown) {
+						if (System.currentTimeMillis() - lastUsed >= cdmills) {
+
+							String broadcastmsg = prefix
+									+ color(config.getString("messages.broadcast message"));
+							broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
+							getServer().broadcastMessage(broadcastmsg);
+							String kickmsg = prefix	+ color(config.getString("messages.kick message"));
+							kickmsg = kickmsg.replace("{player}", player.getName());
+							player.kickPlayer(kickmsg);
+
+							lastUsage.put(player.getName(),	System.currentTimeMillis());
+
+						} else {
+							int timeLeft = (int) (cdmills - ((System
+									.currentTimeMillis() - lastUsed) / 1000));
+							player.sendMessage(color(prefix
+									+ "&4This command is on cooldown for another "
+									+ timeLeft + " seconds."));
+						}
+						return true;
+					}
+					String broadcastmsg = prefix
+							+ color(config.getString("messages.broadcast message"));
+					broadcastmsg = broadcastmsg.replace("{player}",	player.getName());
+					getServer().broadcastMessage(broadcastmsg);
+					String kickmsg = prefix	+ color(config.getString("messages.kick message"));
 					kickmsg = kickmsg.replace("{player}", player.getName());
 					player.kickPlayer(kickmsg);
+					
 					return true;
 				} else {
-					player.sendMessage(prefix + "Please don't put any thing after /ragequit\n" + ChatColor.WHITE + "Usage: /ragequit");		
+					player.sendMessage(prefix
+							+ "Please don't put any thing after /ragequit\n"
+							+ ChatColor.WHITE + "Usage: /ragequit");
 					return true;
 				}
 			} else {
-				clogger.sendMessage(prefix + color(getConfig().getString("messages.console deny")));		
+				clogger.sendMessage(prefix
+						+ color(getConfig().getString("messages.console deny")));
 				return true;
 			}
-		}		
-		
+
+		}
+
 		return false;
 	}
 
@@ -71,7 +112,7 @@ public class RageQuit extends JavaPlugin {
 	}
 
 	@Override
-	public void onEnable() {		
+	public void onEnable() {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.saveDefaultConfig();
 		if (getConfig().isSet("messages.prefix")) {
@@ -79,12 +120,16 @@ public class RageQuit extends JavaPlugin {
 			prefix = color(prefix);
 			clogger.sendMessage(color(prefix + "&fPrefix set."));
 		}
+
+		useCooldown = config.getBoolean("ragequit.cooldown.use");
+		cdtime = config.getInt("ragequit.cooldown.time");
+
 		clogger.sendMessage(prefix + ChatColor.GOLD + "Version: "
-				+ pdfFile.getVersion() + " Has Been Enabled.");		
+				+ pdfFile.getVersion() + " Has Been Enabled.");
 	}
-	
+
 	public String color(String uncolored) {
-		String colored = ChatColor.translateAlternateColorCodes('&', uncolored);		
+		String colored = ChatColor.translateAlternateColorCodes('&', uncolored);
 		return colored;
 	}
 

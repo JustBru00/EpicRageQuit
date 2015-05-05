@@ -3,10 +3,15 @@
 #You can use {player} in Broadcast Message and Kick Message as the player name
 #Comments Below show what the different options mean:
 #Config Version (DO NOT TOUCH PLUGIN WILL NOT WORK)
+#ragequit.cooldown.time time in seconds before the command can be used again.
 #Broadcast Message: Is broadcast when someone ragequits
 #Kick Message: Is used as the kick reason when someone uses /ragequit
 #Console Deny: Is used if someone trys to use /ragequit in CONSOLE
 config version: 1
+ragequit:
+   cooldown:
+    time: 600
+    use: true   
 messages:
    prefix: '&8[&bEpic&fRageQuit&8] &c'
    broadcast message: '&f{player} &crage quit.'
