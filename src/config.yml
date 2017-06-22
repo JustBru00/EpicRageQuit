@@ -1,14 +1,13 @@
-#EpicRageQuit Configuration File.
+#EpicRageQuit configuration file.
 #Color Codes work with &
-#You can use {player} in Broadcast Message and Kick Message as the player name.
+#You can use {player} in broadcast message and kick message as the player name.
 
-
-# No touchy me config version.
-config version: 2
+# Please do not change this
+config_version: 3
 
 # RageQuit command.
 ragequit:
-   # Cooldown header
+  use_broadcasts: true   
   cooldown:
    # Time in secs. the command will be on cooldown.
     time: 600
@@ -19,20 +18,22 @@ ragequit:
 messages:
    # Prefix for messages
    prefix: '&8[&bEpic&fRageQuit&8] &c'
-   # Console Deny Message
-   console deny: '&cSilly CONSOLE you can not rage.'   
-   # No Permission Message
-   no permission: '&cSorry you do not have permission.'
+   # Console deny message
+   console_deny: '&cSilly CONSOLE you can not rage.'   
+   # No permission message
+   no_permission: '&cSorry you do not have permission.'
+   on_cooldown: '&cSorry you that is on cooldown for {cooldown} seconds.' 
 
-   #Default Format Messages (Used when the player has ragequit.default permission)
-   default:
-     broadcast message: '&f{player} &crage quit.'
-     kick message: '&f{player} &cyou rage quit.'
-   #Admin Format Messages (Used when the player has ragequit.admin permission)
-   admin:
-     broadcast message: '&f{player} &crage quit.'
-     kick message: '&f{player} &cyou rage quit.'      
-   #Moderator Format Messages (Used when the player has ragequit.moderator permission)  
-   moderator:
-     broadcast message: '&f{player} &crage quit.'
-     kick message: '&f{player} &cyou rage quit.'
+formats:
+  default:
+    permission: 'epicragequit.default'
+    broadcast_msg: '&c{player} rage quit.'
+    kick_msg: '&cYou rage quit.'
+  moderator:
+    permission: 'epicragequit.moderator'
+    broadcast_msg: '&c{player} rage quit.'
+    kick_msg: '&cYou rage quit.'    
+  admin:
+    permission: 'epicragequit.admin'
+    broadcast_msg: '&c{player} rage quit.'
+    kick_msg: '&cYou rage quit.'    
