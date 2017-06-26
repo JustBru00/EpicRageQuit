@@ -3,6 +3,7 @@ package me.justbru00.epic.ragequit.v2.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import me.justbru00.epic.ragequit.v2.main.Main;
@@ -22,14 +23,17 @@ public class RageQuitCommand implements CommandExecutor {
 						// Use cooldown
 						if (CooldownManager.isOnCooldown(p)) {
 							// kick person with proper messages and put on cooldown
+							rageQuit(p, getFormat(p));
+							CooldownManager.putOnCooldown(p);
 						} else {
 							Messager.msgSender(Main.getInstance().getConfig().getString("messages.on_cooldown").replace("{cooldown}", String.valueOf(CooldownManager.getCooldown(p))), sender);
 							return true;
 						}
 					} else {
-						// No cooldown
-						
+						// No cooldown						
 						// kick person with proper messages
+						
+						rageQuit(p, getFormat(p));
 					}
 				} else {
 					Messager.msgSender(Main.getInstance().getConfig().getString("messages.console_deny"), sender);
@@ -42,6 +46,36 @@ public class RageQuitCommand implements CommandExecutor {
 		}
 		
 		return false;
+	}
+	
+	public static String getFormat(Player p) {
+		FileConfiguration config = Main.getInstance().getConfig();
+		String format = "NONE";
+		int currentPriority = -2000000;
+		
+		for (String key : config.getConfigurationSection("formats").getKeys(false)) {
+			if (p.hasPermission(config.getString("formats." + key + ".permission"))) {
+				if (currentPriority < config.getInt("formats." + key + ".priority")) {
+					format = key;
+					currentPriority = config.getInt("formats." + key + ".priority");
+				}
+			}
+		}
+		
+		
+		return format;
+	}
+	
+	public static void rageQuit(Player p, String formatName) {
+		if (formatName.equals("NONE")) {
+			Messager.sendBC("&c{player} rage quit.".replace("{player}", p.getName()));
+			p.kickPlayer("&cYou rage quit.".replace("{player}", p.getName()));
+			Messager.msgConsole("&c&l" + p.getName() + " just used /ragequit without any specific format permissions. You should give them the permission of formats.default.permission at least. Otherwise you will see this message everytime.");
+			return;
+		}	
+		
+		Messager.sendBC(Main.getInstance().getConfig().getString("formats." + formatName + ".broadcast_msg").replace("{player}", p.getName()));
+		p.kickPlayer(Main.getInstance().getConfig().getString("formats." + formatName + ".kick_msg").replace("{player}", p.getName()));
 	}
 
 }

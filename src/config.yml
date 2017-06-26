@@ -22,18 +22,21 @@ messages:
    console_deny: '&cSilly CONSOLE you can not rage.'   
    # No permission message
    no_permission: '&cSorry you do not have permission.'
-   on_cooldown: '&cSorry you that is on cooldown for {cooldown} seconds.' 
+   on_cooldown: '&cSorry that command is on cooldown for {cooldown} seconds.' 
 
 formats:
   default:
     permission: 'epicragequit.default'
     broadcast_msg: '&c{player} rage quit.'
     kick_msg: '&cYou rage quit.'
+    priority: 1
   moderator:
     permission: 'epicragequit.moderator'
     broadcast_msg: '&c{player} rage quit.'
-    kick_msg: '&cYou rage quit.'    
+    kick_msg: '&cYou rage quit.'  
+    priority: 2  
   admin:
     permission: 'epicragequit.admin'
     broadcast_msg: '&c{player} rage quit.'
-    kick_msg: '&cYou rage quit.'    
+    kick_msg: '&cYou rage quit.'
+    priority: 3    
