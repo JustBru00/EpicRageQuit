@@ -25,11 +25,13 @@ public class Main extends JavaPlugin {
 		
 		saveDefaultConfig();
 		
-		prefix = getConfig().getString("messages.prefix");
+		prefix = Messager.color(getConfig().getString("messages.prefix"));
 		Messager.msgConsole("&aSet prefix...");
 		
 		CooldownManager.init();
 		getCommand("ragequit").setExecutor(new RageQuitCommand());
+		
+		BStats bstats = new BStats(this);
 		
 		Messager.msgConsole("&aVersion: " + getDescription().getVersion() + " has been enabled.");
 	}

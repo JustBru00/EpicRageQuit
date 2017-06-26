@@ -60,7 +60,7 @@ public class Messager {
 	}	
 	
 	public static void sendBC(String msg) {
-		Bukkit.broadcastMessage(Main.prefix + msg);
+		Bukkit.broadcastMessage(Main.prefix + Messager.color(msg));
 	}
 	
 }

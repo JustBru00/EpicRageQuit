@@ -21,7 +21,7 @@ public class RageQuitCommand implements CommandExecutor {
 					Player p = (Player) sender;
 					if (CooldownManager.useCooldown) {
 						// Use cooldown
-						if (CooldownManager.isOnCooldown(p)) {
+						if (!CooldownManager.isOnCooldown(p)) {
 							// kick person with proper messages and put on cooldown
 							rageQuit(p, getFormat(p));
 							CooldownManager.putOnCooldown(p);
@@ -69,13 +69,13 @@ public class RageQuitCommand implements CommandExecutor {
 	public static void rageQuit(Player p, String formatName) {
 		if (formatName.equals("NONE")) {
 			Messager.sendBC("&c{player} rage quit.".replace("{player}", p.getName()));
-			p.kickPlayer("&cYou rage quit.".replace("{player}", p.getName()));
+			p.kickPlayer(Messager.color("&cYou rage quit.".replace("{player}", p.getName())));
 			Messager.msgConsole("&c&l" + p.getName() + " just used /ragequit without any specific format permissions. You should give them the permission of formats.default.permission at least. Otherwise you will see this message everytime.");
 			return;
 		}	
 		
 		Messager.sendBC(Main.getInstance().getConfig().getString("formats." + formatName + ".broadcast_msg").replace("{player}", p.getName()));
-		p.kickPlayer(Main.getInstance().getConfig().getString("formats." + formatName + ".kick_msg").replace("{player}", p.getName()));
+		p.kickPlayer(Messager.color(Main.getInstance().getConfig().getString("formats." + formatName + ".kick_msg").replace("{player}", p.getName())));
 	}
 
 }

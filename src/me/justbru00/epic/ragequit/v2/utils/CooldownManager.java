@@ -40,7 +40,11 @@ public class CooldownManager {
 	}
 	
 	public static long getCooldown(Player p) {
-		return Duration.between(cooldowns.get(p.getUniqueId()), Instant.now()).getSeconds();
+		if (cooldowns.containsKey(p.getUniqueId())) {		
+			return cooldownTime - Duration.between(cooldowns.get(p.getUniqueId()), Instant.now()).getSeconds();
+		} else {
+			return -1;
+		}
 	}
 	
 	public static void putOnCooldown(Player p) {
