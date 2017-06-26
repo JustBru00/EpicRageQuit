@@ -1,6 +1,6 @@
 name: EpicRageQuit
 main: me.justbru00.epic.ragequit.v2.main.Main
-version: 2.0-DEV
+version: 2.0
 description: Adds /ragequit
 authors: [JustBru00]
 

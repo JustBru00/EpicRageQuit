@@ -31,6 +31,7 @@ public class Main extends JavaPlugin {
 		CooldownManager.init();
 		getCommand("ragequit").setExecutor(new RageQuitCommand());
 		
+		@SuppressWarnings("unused")
 		BStats bstats = new BStats(this);
 		
 		Messager.msgConsole("&aVersion: " + getDescription().getVersion() + " has been enabled.");
