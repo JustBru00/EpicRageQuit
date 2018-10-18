@@ -1,10 +1,12 @@
 name: EpicRageQuit
 main: me.justbru00.epic.ragequit.v2.main.Main
-version: 2.1
+version: 2.2
 description: Adds /ragequit
 authors: [JustBru00]
 api-version: 1.13
+website: https://github.com/JustBru00/EpicRageQuit
 
 commands:
  ragequit:
   description: Makes you rage quit.   
+  aliases: [rq]
